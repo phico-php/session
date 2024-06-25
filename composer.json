@@ -23,6 +23,7 @@
   },
   "require": {
     "php": "^8.0",
+    "phico/filesystem": "dev-main",
     "phico/phico": "dev-main"
   },
   "require-dev": {
