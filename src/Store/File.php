@@ -16,21 +16,21 @@ class File implements StoreInterface
     }
     public function delete(string $id): void
     {
-        files()->delete(path("$this->path/$id"));
+        files(path("$this->path/$id"))->delete();
     }
     public function exists(string $id): bool
     {
-        return files()->exists(path("$this->path/$id"));
+        return files(path("$this->path/$id"))->exists();
     }
     public function get(string $id): ?array
     {
         if (!$this->exists($id)) {
             return null;
         }
-        return (array) json_decode(files()->read(path("$this->path/$id")));
+        return (array) json_decode(files(path("$this->path/$id"))->read());
     }
     public function put(string $id, array $data): void
     {
-        files()->write(path("$this->path/$id"), json_encode($data));
+        files(path("$this->path/$id"))->write(json_encode($data));
     }
 }
