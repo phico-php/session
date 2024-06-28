@@ -12,13 +12,13 @@ class SessionMiddleware implements MiddlewareInterface
     function handle(Request $request, $next)
     {
         // don't clobber an existing session
-        if ($request->get('session') instanceof Session) {
+        if ($request->attrs->get('session') instanceof Session) {
             return $next($request);
         }
 
         // fetch config values
         $cookie_name = config('session.cookie.name', 'session');
-        $cookie_options = config('session.cookie.options', [
+        $cookie_options = array_merge([
             'expires' => 0,
             'path' => '/',
             'domain' => '',
@@ -27,12 +27,12 @@ class SessionMiddleware implements MiddlewareInterface
             'samesite' => 'Strict',
             'prefix' => '',
             'encode' => false,
-        ]);
+        ], config('session.cookie.options'));
 
         // fetch existing session or create a new one
-        $session = new Session($request->cookies($cookie_name));
+        $session = new Session($request->cookies->get($cookie_name));
         // store session in request attributes
-        $request->set('session', $session);
+        $request->attrs->set('session', $session);
 
         // continue app
         $response = $next($request);
