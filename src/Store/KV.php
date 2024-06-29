@@ -14,9 +14,9 @@ class KV implements StoreInterface
 
     public function __construct()
     {
-        $this->url = config('api.kv.url');
-        $this->account_id = config('api.kv.account_id');
-        $this->namespace_id = config('api.kv.namespace_id');
+        $this->url = config()->get('api.kv.url');
+        $this->account_id = config()->get('api.kv.account_id');
+        $this->namespace_id = config()->get('api.kv.namespace_id');
     }
 
     public function get(string $key): mixed

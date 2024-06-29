@@ -17,7 +17,7 @@ class SessionMiddleware implements MiddlewareInterface
         }
 
         // fetch config values
-        $cookie_name = config('session.cookie.name', 'session');
+        $cookie_name = config()->get('session.cookie.name', 'session');
         $cookie_options = array_merge([
             'expires' => 0,
             'path' => '/',
@@ -27,7 +27,7 @@ class SessionMiddleware implements MiddlewareInterface
             'samesite' => 'Strict',
             'prefix' => '',
             'encode' => false,
-        ], config('session.cookie.options'));
+        ], config()->get('session.cookie.options'));
 
         // fetch existing session or create a new one
         $session = new Session($request->cookies->get($cookie_name));

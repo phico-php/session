@@ -17,7 +17,7 @@ class CsrfMiddleware implements MiddlewareInterface
         }
 
         // get csrf input field name from config
-        $token_name = config('session.csrf.token_name', '__csrf_token');
+        $token_name = config()->get('session.csrf.token_name', '__csrf_token');
 
         if ($request->is('get')) {
             // if request method is GET, then set the token in session

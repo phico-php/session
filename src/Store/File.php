@@ -12,7 +12,7 @@ class File implements StoreInterface
 
     public function __construct()
     {
-        $this->path = config('session.file.folder', 'storage/sessions');
+        $this->path = config()->get('session.file.folder', 'storage/sessions');
     }
     public function delete(string $id): void
     {
