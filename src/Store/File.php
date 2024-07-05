@@ -27,10 +27,10 @@ class File implements StoreInterface
         if (!$this->exists($id)) {
             return null;
         }
-        return (array) json_decode(files(path("$this->path/$id"))->read());
+        return unserialize(files(path("$this->path/$id"))->read());
     }
     public function put(string $id, array $data): void
     {
-        files(path("$this->path/$id"))->write(json_encode($data));
+        files(path("$this->path/$id"))->write(serialize($data));
     }
 }

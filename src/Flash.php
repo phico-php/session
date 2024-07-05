@@ -13,8 +13,15 @@ class Flash
 
     public function __construct(array $data = [])
     {
-        $this->current = $data['next'] ?? [];
+        $this->current = $data['current'] ?? [];
+        $this->next = $data['next'] ?? [];
+    }
+    public function age(): self
+    {
+        $this->current = $this->next;
         $this->next = [];
+
+        return $this;
     }
     public function has(string $key): bool
     {
@@ -28,12 +35,5 @@ class Flash
     {
         $this->next[$key] = $value;
         return $this;
-    }
-    public function __toString()
-    {
-        return json_encode([
-            'current' => $this->current,
-            'next' => $this->next
-        ]);
     }
 }

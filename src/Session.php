@@ -37,8 +37,9 @@ class Session
         }
         // populate session data from storage
         $this->id = $id;
-        $this->data = json_decode($encoded['data'], true);
-        $this->flash = new Flash(json_decode($encoded['flash'], true));
+        $this->data = $encoded['data'];
+        $this->flash = $encoded['flash'];
+        $this->flash->age();
     }
     public function __get(string $name): mixed
     {
@@ -88,8 +89,8 @@ class Session
         $this->id = $this->generateId();
         // store current data under new id
         $this->store->put($this->id, [
-            'data' => json_encode($this->data),
-            'flash' => (string) $this->flash
+            'data' => $this->data,
+            'flash' => $this->flash
         ]);
         // remove data stored under old id
         $this->store->delete($old_id);
@@ -104,8 +105,8 @@ class Session
         }
         // store data with id
         $this->store->put($this->id, [
-            'data' => json_encode($this->data),
-            'flash' => (string) $this->flash
+            'data' => $this->data,
+            'flash' => $this->flash
         ]);
 
         return true;
