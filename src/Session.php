@@ -29,16 +29,18 @@ class Session
             return;
         }
         // if we have an id then look it up
-        $encoded = $this->store->get($id);
+        $str = $this->store->get($id);
         // if null then no session was found so create a new one
-        if (is_null($encoded)) {
+        if (is_null($str)) {
             $this->create();
             return;
         }
+        // unserialize data string
+        $session = unserialize($str);
         // populate session data from storage
         $this->id = $id;
-        $this->data = $encoded['data'];
-        $this->flash = $encoded['flash'];
+        $this->data = $session['data'];
+        $this->flash = $session['flash'];
         $this->flash->age();
     }
     public function __get(string $name): mixed
