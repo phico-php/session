@@ -1,5 +1,9 @@
 <?php
 
-test('example', function () {
-    expect(true)->toBeTrue();
+test('can create session', function () {
+
+
+
 });
+
+

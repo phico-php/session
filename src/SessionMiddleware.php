@@ -6,19 +6,23 @@ namespace Phico\Session;
 
 use Phico\Http\Request;
 use Phico\Middleware\MiddlewareInterface;
+use Phico\Session\Store\SessionStore;
+
 
 class SessionMiddleware implements MiddlewareInterface
 {
-    function handle(Request $request, $next)
+    private string $cookie_name;
+    private array $cookie_options;
+    private SessionStore $store;
+
+
+    public function __construct(SessionStore $store, array $config)
     {
-        // don't clobber an existing session
-        if ($request->attrs->get('session') instanceof Session) {
-            return $next($request);
-        }
+        $this->store = $store;
 
         // fetch config values
-        $cookie_name = config()->get('session.cookie.name', 'session');
-        $cookie_options = array_merge([
+        $this->cookie_name = $config['name'];
+        $this->cookie_options = array_merge([
             'expires' => 0,
             'path' => '/',
             'domain' => '',
@@ -27,19 +31,41 @@ class SessionMiddleware implements MiddlewareInterface
             'samesite' => 'Strict',
             'prefix' => '',
             'encode' => false,
-        ], config()->get('session.cookie.options'));
+        ], $config['options']);
+    }
 
+    public function handle(Request $request, $next)
+    {
+        if ($request->attrs->has('session')) {
+            throw new \DomainException('Session middleware has been included twice, please check your middleware stack');
+        }
+
+        // get session id from cookie
+        $id = $request->cookies->get($this->cookie_name);
         // fetch existing session or create a new one
-        $session = new Session($request->cookies->get($cookie_name));
+        $session = (is_null($id))
+            ? $this->store->create()
+            : $this->store->fetch($id);
         // store session in request attributes
         $request->attrs->set('session', $session);
 
         // continue app
         $response = $next($request);
 
+        // return response if session is deleted
+        if ($session->shouldDelete()) {
+            $this->store->delete($session->id);
+            return $response;
+        }
+
+        // regenerated session will be saved below
+        if ($session->shouldRegenerate()) {
+            $session = $this->store->regenerate($session);
+        }
+
         // save session and set cookie
-        if ($session->save()) {
-            $response->cookie($cookie_name, $session->id, $cookie_options);
+        if ($this->store->store($session)) {
+            $response->cookie($this->cookie_name, $session->id, $this->cookie_options);
         }
 
         return $response;

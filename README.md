@@ -10,6 +10,36 @@ Install using composer
 composer require phico/session
 ```
 
+## Config
+
+Session config should be passed as an array
+
+```php
+$config = [
+
+    // set the cookie parameters
+    'cookie' => [
+
+        'name' => 'ssn',
+
+        'options' => [
+            'expires' => 0,
+            'path' => '/',
+            'domain' => '',
+            'secure' => false,
+            'httponly' => true,
+            'samesite' => 'Lax',
+            'prefix' => '',
+            'encode' => false,
+        ],
+
+    ],
+
+    // set the Time To Live in seconds, sessions will expire after this time
+    'ttl' => 3600
+];
+```
+
 ## Usage
 
 ### Instantiating the Session
@@ -17,17 +47,13 @@ composer require phico/session
 Use the session middleware to pass the session through the Request.
 
 ```php
+public function use(): array
+{
+    return [
+        \Phico\Session\SessionMiddleware::class
+    ]
+}
 
-```
-
-If no ID is provided or the session id does not exist then a new session will be created.
-
-### Accessing the Session ID
-
-You can get (but not set) the session ID using `$session->id`.
-
-```php
-$id = $session->id;
 ```
 
 ### Storing Data
@@ -36,6 +62,9 @@ To store data in the session, use the `set` method.
 
 ```php
 $session->set('key', 'value');
+
+// or shorthand
+$session->key = $value;
 ```
 
 ### Retrieving Data
@@ -43,7 +72,14 @@ $session->set('key', 'value');
 To retrieve data from the session, use the `get` method. You can provide a default value that will be returned if the key does not exist.
 
 ```php
+$value = $session->get('key');
+
+// optionally specify a default value if key is not in the session
 $value = $session->get('key', 'default');
+
+// or shorthand without specifying a default
+$value = $session->key;
+
 ```
 
 ### Checking for Data
@@ -80,20 +116,20 @@ To delete a session, use the `delete` method. This removes the session data from
 $session->delete();
 ```
 
+### Accessing the Session ID
+
+THe session id is readonly
+
+```php
+$id = $session->id;
+```
+
 ### Regenerating the Session ID
 
-To regenerate the session ID, which is useful for preventing session fixation attacks, use the `regenerate` method.
+To create a new session id use the `regenerate` method, this will remove the old session from storage.
 
 ```php
 $session->regenerate();
-```
-
-### Saving the Session
-
-To manually save the session data to the storage, use the `save` method. This is usually handled automatically by middleware.
-
-```php
-$session->save();
 ```
 
 ## Issues

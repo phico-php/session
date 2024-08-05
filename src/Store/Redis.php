@@ -4,24 +4,32 @@ declare(strict_types=1);
 
 namespace Phico\Session\Store;
 
+use Phico\Cache\Cache as Driver;
 use Phico\Session\Session;
 
 
-class File extends Store implements SessionStore
+class Redis extends Store implements SessionStore
 {
-    protected string $path;
+    protected Driver $driver;
+    protected string $prefix;
     protected int $ttl;
 
 
-    public function __construct(string $path, int $ttl)
+    public function __construct(Driver $driver, array $config)
     {
-        $this->path = $path;
-        $this->ttl = $ttl;
+        $this->driver = $driver;
+        $this->prefix = $config['prefix'] ?? 'session';
+        $this->ttl = $config['ttl'] ?? 3600;
     }
+    protected function getKey(string $id): string
+    {
+        return "{$this->prefix}.{$id}";
+    }
+
     public function delete(string $id): void
     {
         try {
-            files(path("$this->path/$id"))->delete();
+            $this->driver->delete($this->getKey($id));
         } catch (\Throwable $th) {
             throw new SessionStoreException('Failed to delete session from store', $th);
         }
@@ -29,7 +37,7 @@ class File extends Store implements SessionStore
     public function exists(string $id): bool
     {
         try {
-            return files(path("$this->path/$id"))->exists();
+            return $this->driver->exists($this->getKey($id));
         } catch (\Throwable $th) {
             throw new SessionStoreException('Failed to check session exists in store', $th);
         }
@@ -39,7 +47,7 @@ class File extends Store implements SessionStore
         try {
             return new Session(
                 $id,
-                files(path("$this->path/$id"))->read()
+                $this->driver->get($this->getKey($id))
             );
         } catch (\Throwable $th) {
             throw new SessionStoreException('Failed to fetch session from store', $th);
@@ -48,7 +56,7 @@ class File extends Store implements SessionStore
     public function store(Session $session): void
     {
         try {
-            files(path("$this->path/$session->id"))->write((string) $session);
+            $this->driver->put($this->getKey($session->id));
         } catch (\Throwable $th) {
             throw new SessionStoreException('Failed to save session in store', $th);
         }
