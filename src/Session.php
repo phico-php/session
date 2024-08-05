@@ -88,10 +88,10 @@ class Session
         // generate a new id
         $this->id = $this->generateId();
         // store current data under new id
-        $this->store->put($this->id, [
+        $this->store->put($this->id, serialize([
             'data' => $this->data,
             'flash' => $this->flash
-        ]);
+        ]));
         // remove data stored under old id
         $this->store->delete($old_id);
 
@@ -104,10 +104,10 @@ class Session
             return false;
         }
         // store data with id
-        $this->store->put($this->id, [
+        $this->store->put($this->id, serialize([
             'data' => $this->data,
             'flash' => $this->flash
-        ]);
+        ]));
 
         return true;
     }
