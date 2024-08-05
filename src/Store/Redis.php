@@ -26,10 +26,11 @@ class Redis extends Store implements SessionStore
         return "{$this->prefix}.{$id}";
     }
 
-    public function delete(string $id): void
+    public function delete(string $id): bool
     {
         try {
-            $this->driver->delete($this->getKey($id));
+            $this->driver->del($this->getKey($id));
+            return true;
         } catch (\Throwable $th) {
             throw new SessionStoreException('Failed to delete session from store', $th);
         }
@@ -53,10 +54,11 @@ class Redis extends Store implements SessionStore
             throw new SessionStoreException('Failed to fetch session from store', $th);
         }
     }
-    public function store(Session $session): void
+    public function store(Session $session): bool
     {
         try {
-            $this->driver->put($this->getKey($session->id));
+            $this->driver->set($this->getKey($session->id));
+            return true;
         } catch (\Throwable $th) {
             throw new SessionStoreException('Failed to save session in store', $th);
         }

@@ -25,10 +25,10 @@ class File extends Store implements SessionStore
 
         return $session;
     }
-    public function delete(string $id): void
+    public function delete(string $id): bool
     {
         try {
-            files(path("$this->path/$id"))->delete();
+            return files(path("$this->path/$id"))->delete();
         } catch (\Throwable $th) {
             throw new SessionStoreException('Failed to delete session from store', $th);
         }
@@ -52,10 +52,10 @@ class File extends Store implements SessionStore
             throw new SessionStoreException('Failed to fetch session from store', $th);
         }
     }
-    public function store(Session $session): void
+    public function store(Session $session): bool
     {
         try {
-            files(path("$this->path/$session->id"))->write((string) $session);
+            return files(path("$this->path/$session->id"))->write((string) $session);
         } catch (\Throwable $th) {
             throw new SessionStoreException('Failed to save session in store', $th);
         }

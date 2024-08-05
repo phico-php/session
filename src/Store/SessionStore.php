@@ -10,10 +10,10 @@ use Phico\Session\Session;
 interface SessionStore
 {
     public function create(?string $payload = null): Session;
-    public function delete(string $id): void;
+    public function delete(string $id): bool;
     public function exists(string $id): bool;
     public function fetch(string $id): Session;
     public function fetchOrCreate(string $id): Session;
     public function regenerate(Session $session): Session;
-    public function store(Session $session): void;
+    public function store(Session $session): bool;
 }
