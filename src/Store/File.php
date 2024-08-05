@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Phico\Session\Store;
 
 
-class File implements StoreInterface
+class File implements SessionStore
 {
     protected string $path;
 

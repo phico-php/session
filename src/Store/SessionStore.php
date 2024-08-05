@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Phico\Session\Store;
 
 
-interface StoreInterface
+interface SessionStore
 {
     public function delete(string $id): void;
     public function exists(string $id): bool;
-    public function get(string $id): ?array;
-    public function put(string $id, array $data): void;
+    public function get(string $id): ?string;
+    public function put(string $id, string $data): void;
 }
