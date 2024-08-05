@@ -29,7 +29,7 @@ abstract class Store
     }
     public function regenerate(Session $session): Session
     {
-        $this->delete($session);
+        $this->delete($session->id);
         return $this->create((string) $session);
     }
     protected function generateId(): string
