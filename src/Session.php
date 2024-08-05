@@ -42,9 +42,9 @@ class Session
     {
         return $this->get($name);
     }
-    public function __set(string $name, mixed $value): mixed
+    public function __set(string $name, mixed $value): void
     {
-        return $this->set($name, $value);
+        $this->set($name, $value);
     }
     public function has(string $key): bool
     {
