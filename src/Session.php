@@ -24,10 +24,14 @@ class Session
         $this->regenerate = false;
 
         $this->id = $id;
+        $this->data = [];
+        $this->flash = new Flash();
 
-        $payload = unserialize($payload);
-        $this->data = $payload['data'] ?? [];
-        $this->flash = $payload['flash'] ?? new Flash();
+        if (!is_null($payload)) {
+            $payload = unserialize($payload);
+            $this->data = $payload['data'];
+            $this->flash = $payload['flash'];
+        }
 
         $this->flash->age();
     }
