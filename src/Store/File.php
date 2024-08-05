@@ -22,15 +22,15 @@ class File implements StoreInterface
     {
         return files(path("$this->path/$id"))->exists();
     }
-    public function get(string $id): ?array
+    public function get(string $id): ?string
     {
         if (!$this->exists($id)) {
             return null;
         }
-        return unserialize(files(path("$this->path/$id"))->read());
+        return files(path("$this->path/$id"))->read();
     }
-    public function put(string $id, array $data): void
+    public function put(string $id, string $data): void
     {
-        files(path("$this->path/$id"))->write(serialize($data));
+        files(path("$this->path/$id"))->write($data);
     }
 }
