@@ -43,9 +43,7 @@ class SessionMiddleware implements MiddlewareInterface
         // get session id from cookie
         $id = $request->cookies->get($this->cookie_name);
         // fetch existing session or create a new one
-        $session = (is_null($id))
-            ? $this->store->create()
-            : $this->store->fetch($id);
+        $session = $this->store->fetchOrCreate($id);
         // store session in request attributes
         $request->attrs->set('session', $session);
 

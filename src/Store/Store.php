@@ -13,10 +13,24 @@ abstract class Store
     {
         return new Session($this->generateId(), $payload);
     }
+    public function fetchOrCreate(string $id): Session
+    {
+        try {
+
+            if ($this->exists($id)) {
+                return $this->fetch($id);
+            }
+
+            return $this->create();
+
+        } catch (\Throwable $th) {
+            throw new SessionStoreException('Failed to fetch session from store', $th);
+        }
+    }
     public function regenerate(Session $session): Session
     {
         $this->delete($session);
-        return $this->create($session->toString());
+        return $this->create((string) $session);
     }
     protected function generateId(): string
     {

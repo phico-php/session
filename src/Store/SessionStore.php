@@ -13,6 +13,7 @@ interface SessionStore
     public function delete(string $id): void;
     public function exists(string $id): bool;
     public function fetch(string $id): Session;
+    public function fetchOrCreate(string $id): Session;
     public function regenerate(Session $session): Session;
     public function store(Session $session): void;
 }
