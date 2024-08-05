@@ -18,6 +18,13 @@ class File extends Store implements SessionStore
         $this->path = $path;
         $this->ttl = $ttl;
     }
+    public function create(string|null $payload = null): Session
+    {
+        $session = parent::create($payload);
+        files(path("$this->path/$session->id"))->create();
+
+        return $session;
+    }
     public function delete(string $id): void
     {
         try {
