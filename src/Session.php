@@ -29,8 +29,8 @@ class Session
 
         if (!is_null($payload)) {
             $payload = unserialize($payload);
-            $this->data = $payload['data'];
-            $this->flash = $payload['flash'];
+            $this->data = $payload['data'] ?? [];
+            $this->flash = $payload['flash'] ?? new Flash();
         }
 
         $this->flash->age();

@@ -7,7 +7,7 @@ namespace Phico\Session\Store;
 use Phico\Session\Session;
 
 
-interface SessionStore
+interface StoreInterface
 {
     public function create(?string $payload = null): Session;
     public function delete(string $id): bool;

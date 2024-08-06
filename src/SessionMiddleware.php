@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Phico\Session;
 
-use Phico\Http\Request;
+use Phico\Http\{Request, Response};
 use Phico\Middleware\MiddlewareInterface;
-use Phico\Session\Store\SessionStore;
+use Phico\Session\Store\Store;
 
 
 class SessionMiddleware implements MiddlewareInterface
@@ -34,7 +34,7 @@ class SessionMiddleware implements MiddlewareInterface
         ], $config['options']);
     }
 
-    public function handle(Request $request, $next)
+    public function handle(Request $request, $next): Response
     {
         if ($request->attrs->has('session')) {
             throw new \DomainException('Session middleware has been included twice, please check your middleware stack');

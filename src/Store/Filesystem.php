@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Phico\Session\Store;
 
-use Phico\Cache\Drivers\Redis as Driver;
+use Phico\Cache\Drivers\Filesystem as Driver;
 use Phico\Session\Session;
 
 
-class Redis extends Driver implements StoreInterface
+class Filesystem extends Driver implements StoreInterface
 {
     use Traits\Create;
     use Traits\FetchOrCreate;
@@ -21,7 +21,7 @@ class Redis extends Driver implements StoreInterface
         try {
             return new Session(
                 $id,
-                $this->client->get($this->getKey($id))
+                files($this->getKey($id))->read()
             );
         } catch (\Throwable $th) {
             throw new StoreException('Failed to fetch session from store', $th);
@@ -30,7 +30,7 @@ class Redis extends Driver implements StoreInterface
     public function store(Session $session): bool
     {
         try {
-            $this->client->set($this->getKey($session->id), (string) $session);
+            files($this->getKey($session->id))->write((string) $session);
             return true;
         } catch (\Throwable $th) {
             throw new StoreException('Failed to save session in store', $th);

@@ -7,7 +7,7 @@ namespace Phico\Session\Store;
 use Phico\PhicoException;
 
 
-class SessionStoreException extends PhicoException
+class StoreException extends PhicoException
 {
     public function __construct(string $message = "", \Throwable $previous = null)
     {
