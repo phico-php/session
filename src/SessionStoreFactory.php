@@ -12,6 +12,9 @@ class SessionStoreFactory
     public static function create(array $config): StoreInterface
     {
         $use = strtolower($config['use']);
+        $config = array_merge($config['stores'][$use], [
+            'ttl' => $config['ttl'] ?? 3600
+        ]);
 
         return match (strtolower($use)) {
             'redis' => new Redis($config),

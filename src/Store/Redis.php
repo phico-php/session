@@ -30,7 +30,7 @@ class Redis extends Driver implements StoreInterface
     public function store(Session $session): bool
     {
         try {
-            $this->client->set($this->getKey($session->id), (string) $session);
+            $this->client->setEx($this->getKey($session->id), $this->ttl, (string) $session);
             return true;
         } catch (\Throwable $th) {
             throw new StoreException('Failed to save session in store', $th);
