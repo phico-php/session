@@ -19,6 +19,7 @@ class Filesystem extends Driver implements StoreInterface
     public function fetch(string $id): Session
     {
         try {
+            //@TODO this is never called, but would return a stale session if cron does not delete expired session files
             return new Session(
                 $id,
                 files($this->getKey($id))->read()
