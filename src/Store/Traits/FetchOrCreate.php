@@ -10,15 +10,15 @@ use Phico\Session\Store\StoreException;
 
 trait fetchOrCreate
 {
-    public function fetchOrCreate(string $id): Session
+    public function fetchOrCreate(null|string $id = null): Session
     {
         try {
 
-            if ($this->exists($id)) {
-                return $this->fetch($id);
+            if (is_null($id) or !$this->exists($id)) {
+                return $this->create();
             }
 
-            return $this->create();
+            return $this->fetch($id);
 
         } catch (\Throwable $th) {
             throw new StoreException('Failed to fetch session from store', $th);

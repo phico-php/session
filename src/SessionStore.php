@@ -33,7 +33,7 @@ class SessionStore extends Cache
     {
         return $this->store->fetch($id);
     }
-    public function fetchOrCreate(string $id): Session
+    public function fetchOrCreate(null|string $id = null): Session
     {
         return $this->store->fetchOrCreate($id);
     }
