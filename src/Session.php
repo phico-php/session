@@ -72,9 +72,17 @@ class Session
         $this->delete = true;
         return $this;
     }
-    public function flash(string $key, mixed $value): self
+    public function flash(array|string $key, mixed $value): self
     {
-        $this->flash->set($key, $value);
+        if (is_string($key)) {
+            $this->flash->set($key, $value);
+        }
+        if (is_array($key)) {
+            foreach ($key as $k => $v) {
+                $this->flash->set($k, $v);
+            }
+        }
+
         return $this;
     }
     public function regenerate(): self
