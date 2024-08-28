@@ -81,12 +81,15 @@ class Session
         $this->delete = true;
         return $this;
     }
-    public function flash(array|string $key, mixed $value): self
+    public function flash(array|string $key, mixed $value = null): self
     {
         if (is_string($key)) {
             $this->flash->set($key, $value);
         }
         if (is_array($key)) {
+            if (!is_null($value)) {
+                throw new \InvalidArgumentException('Session flash() cannot accept two arguments if the first argument is an array');
+            }
             foreach ($key as $k => $v) {
                 $this->flash->set($k, $v);
             }
