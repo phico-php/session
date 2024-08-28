@@ -6,7 +6,6 @@ namespace Phico\Session;
 
 use Phico\Http\{Request, Response};
 use Phico\Middleware\MiddlewareInterface;
-use Phico\Session\Store\Store;
 
 
 class SessionMiddleware implements MiddlewareInterface
@@ -16,12 +15,12 @@ class SessionMiddleware implements MiddlewareInterface
     private SessionStore $store;
 
 
-    public function __construct(SessionStore $store, array $config)
+    public function __construct(array $config)
     {
-        $this->store = $store;
+        $this->store = new SessionStore($config);
 
         // fetch config values
-        $this->cookie_name = $config['name'];
+        $this->cookie_name = $config['cookie']['name'];
         $this->cookie_options = array_merge([
             'expires' => 0,
             'path' => '/',
@@ -31,7 +30,7 @@ class SessionMiddleware implements MiddlewareInterface
             'samesite' => 'Strict',
             'prefix' => '',
             'encode' => false,
-        ], $config['options']);
+        ], $config['cookie']['options']);
     }
 
     public function handle(Request $request, $next): Response
