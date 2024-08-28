@@ -50,6 +50,10 @@ class Session
     {
         $this->set($name, $value);
     }
+    public function __unset($name): void
+    {
+        $this->unset($name);
+    }
     public function has(string $key): bool
     {
         return isset($this->data[$key]);
@@ -65,6 +69,11 @@ class Session
     public function set(string $key, mixed $value): self
     {
         $this->data[$key] = $value;
+        return $this;
+    }
+    public function unset(string $key): self
+    {
+        unset($this->data[$key]);
         return $this;
     }
     public function delete(): self
