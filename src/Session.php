@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Phico\Session;
 
-use Phico\PhicoException;
+use Phico\DotAccess;
+
 
 /**
  * @property string $id
  */
 class Session
 {
+    use DotAccess;
+
     public readonly string $id;
     private array $data;
     private Flash $flash;
@@ -56,7 +59,7 @@ class Session
     }
     public function has(string $key): bool
     {
-        return isset($this->data[$key]);
+        return $this->dotHas('data', $key);
     }
     public function get(string $key, mixed $default = null): mixed
     {
@@ -64,16 +67,16 @@ class Session
             return $this->flash->get($key);
         }
 
-        return $this->data[$key] ?? $default;
+        return $this->dotGet('data', $key, $default);
     }
     public function set(string $key, mixed $value): self
     {
-        $this->data[$key] = $value;
+        $this->dotSet('data', $key, $value);
         return $this;
     }
     public function unset(string $key): self
     {
-        unset($this->data[$key]);
+        $this->dotUnset('data', $key);
         return $this;
     }
     public function delete(): self

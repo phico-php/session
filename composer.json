@@ -24,7 +24,8 @@
   "require": {
     "php": "^8.0",
     "phico/cache": "dev-main",
-    "phico/filesystem": "dev-main"
+    "phico/filesystem": "dev-main",
+    "phico/support": "dev-main"
   },
   "require-dev": {
     "phpstan/phpstan": "*",

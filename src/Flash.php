@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Phico\Session;
 
+use Phico\DotAccess;
+
 
 class Flash
 {
+    use DotAccess;
+
     private array $current;
     private array $next;
 
@@ -29,11 +33,11 @@ class Flash
     }
     public function get(string $key, mixed $default = null): mixed
     {
-        return $this->current[$key] ?? $default;
+        return $this->dotGet('current', $key, $default);
     }
     public function set(string $key, mixed $value): self
     {
-        $this->next[$key] = $value;
+        $this->dotSet('next', $key, $value);
         return $this;
     }
 }
