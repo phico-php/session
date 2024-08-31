@@ -35,16 +35,16 @@ class SessionMiddleware implements MiddlewareInterface
 
     public function handle(Request $request, $next): Response
     {
-        if ($request->attrs->has('session')) {
+        if ($request->attr('session')) {
             throw new \DomainException('Session middleware has been included twice, please check your middleware stack');
         }
 
         // get session id from cookie
-        $id = $request->cookies->get($this->cookie_name);
+        $id = $request->cookie($this->cookie_name);
         // fetch existing session or create a new one
         $session = $this->store->fetchOrCreate($id);
         // store session in request attributes
-        $request->attrs->set('session', $session);
+        $request->attrs()->set('session', $session);
 
         // continue app
         $response = $next($request);
