@@ -21,14 +21,24 @@
       "pestphp/pest-plugin": true
     }
   },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "/home/dev/phico-php/phico"
+    }
+  ],
   "require": {
     "php": "^8.0",
     "phico/cache": "dev-main",
     "phico/filesystem": "dev-main",
+    "phico/phico": "dev-main",
     "phico/support": "dev-main"
   },
   "require-dev": {
     "phpstan/phpstan": "*",
     "pestphp/pest": "^2.34"
+  },
+  "scripts": {
+    "analyse": "vendor/bin/phpstan  analyse src/"
   }
 }

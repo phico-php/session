@@ -8,7 +8,7 @@ use Phico\Session\Session;
 use Phico\Session\Store\StoreException;
 
 
-trait fetchOrCreate
+trait FetchOrCreate
 {
     public function fetchOrCreate(null|string $id = null): Session
     {
