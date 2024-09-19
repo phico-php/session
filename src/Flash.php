@@ -33,11 +33,11 @@ class Flash
     }
     public function get(string $key, mixed $default = null): mixed
     {
-        return $this->dotGet('current', $key, $default);
+        return $this->dotGet($this->current, $key, $default);
     }
     public function set(string $key, mixed $value): self
     {
-        $this->dotSet('next', $key, $value);
+        $this->dotSet($this->next, $key, $value);
         return $this;
     }
 }

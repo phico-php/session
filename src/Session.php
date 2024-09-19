@@ -59,7 +59,7 @@ class Session
     }
     public function has(string $key): bool
     {
-        return $this->dotHas('data', $key);
+        return $this->dotHas($this->data, $key);
     }
     public function get(string $key, mixed $default = null): mixed
     {
@@ -67,16 +67,16 @@ class Session
             return $this->flash->get($key);
         }
 
-        return $this->dotGet('data', $key, $default);
+        return $this->dotGet($this->data, $key, $default);
     }
     public function set(string $key, mixed $value): self
     {
-        $this->dotSet('data', $key, $value);
+        $this->dotSet($this->data, $key, $value);
         return $this;
     }
     public function unset(string $key): self
     {
-        $this->dotUnset('data', $key);
+        $this->dotUnset($this->data, $key);
         return $this;
     }
     public function delete(): self
