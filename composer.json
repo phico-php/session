@@ -1,44 +1,50 @@
 {
-  "name": "phico/session",
-  "description": "Specialised session support for Phico",
-  "type": "library",
-  "license": "BSD-3-Clause",
-  "minimum-stability": "dev",
-  "autoload": {
-    "psr-4": {
-      "Phico\\Session\\": "src/"
+    "name": "phico/session",
+    "description": "Specialised session support for Phico",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Phico\\Session\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "indgy",
+            "email": "me@indgy.uk"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true,
+            "pestphp/pest-plugin": true
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/home/dev/phico-php/phico"
+        },
+        {
+            "type": "path",
+            "url": "/home/dev/phico-php/router"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "phico/cache": "dev-main",
+        "phico/filesystem": "dev-main",
+        "phico/phico": "dev-main",
+        "phico/support": "dev-main"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "*",
+        "pestphp/pest": "^2.34",
+        "friendsofphp/php-cs-fixer": "dev-master",
+        "squizlabs/php_codesniffer": "4.0.x-dev"
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan  analyse src/"
     }
-  },
-  "authors": [
-    {
-      "name": "indgy",
-      "email": "me@indgy.uk"
-    }
-  ],
-  "config": {
-    "allow-plugins": {
-      "phpstan/extension-installer": true,
-      "pestphp/pest-plugin": true
-    }
-  },
-  "repositories": [
-    {
-      "type": "path",
-      "url": "/home/dev/phico-php/phico"
-    }
-  ],
-  "require": {
-    "php": "^8.0",
-    "phico/cache": "dev-main",
-    "phico/filesystem": "dev-main",
-    "phico/phico": "dev-main",
-    "phico/support": "dev-main"
-  },
-  "require-dev": {
-    "phpstan/phpstan": "*",
-    "pestphp/pest": "^2.34"
-  },
-  "scripts": {
-    "analyse": "vendor/bin/phpstan  analyse src/"
-  }
 }
