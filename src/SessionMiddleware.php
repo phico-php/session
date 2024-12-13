@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Phico\Session;
 
+use InvalidArgumentException;
+use DomainException;
+use BadMethodCallException;
 use Phico\Http\{Request, Response};
 use Phico\Middleware\MiddlewareInterface;
-
 
 class SessionMiddleware implements MiddlewareInterface
 {
@@ -14,7 +16,11 @@ class SessionMiddleware implements MiddlewareInterface
     private array $cookie_options;
     private SessionStore $store;
 
-
+    /**
+     * The constructor accepts an array of config values
+     * @param array $config
+     * @return void
+     */
     public function __construct(array $config)
     {
         $this->store = new SessionStore($config);
@@ -33,6 +39,15 @@ class SessionMiddleware implements MiddlewareInterface
         ], $config['cookie']['options']);
     }
 
+    /**
+     * Handles the Request
+     * @param Request $request
+     * @param mixed $next
+     * @return Response
+     * @throws InvalidArgumentException
+     * @throws DomainException
+     * @throws BadMethodCallException
+     */
     public function handle(Request $request, $next): Response
     {
         if ($request->attr('session')) {
